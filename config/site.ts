@@ -1,18 +1,22 @@
 export type SiteConfig = typeof siteConfig
 
 export const siteConfig = {
-  name: "Next.js",
+  name: "Access Protocol - Next.js",
   description:
-    "Beautifully designed components built with Radix UI and Tailwind CSS.",
+    "Access Protocol Next.js starter repo with Radix UI and Tailwind CSS.",
   mainNav: [
     {
       title: "Home",
       href: "/",
     },
+    {
+      title: "Protected",
+      href: "/protected",
+    },
   ],
   links: {
-    twitter: "https://twitter.com/shadcn",
-    github: "https://github.com/shadcn/ui",
-    docs: "https://ui.shadcn.com",
+    twitter: "https://twitter.com/AccessProtocol",
+    github: "https://github.com/Access-Labs-Inc/next-js-starter",
+    docs: "https://docs.accessprotocol.co",
   },
 }
