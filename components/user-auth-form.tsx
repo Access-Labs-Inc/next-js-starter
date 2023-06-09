@@ -22,10 +22,11 @@ import bs58 from "bs58";
 import { getCsrfToken, signIn } from "next-auth/react";
 
 import { Icons } from "@/components/icons";
-import { toast } from "@/components/ui/toast";
+import { useToast } from "@/components/ui/use-toast";
 import Loading from "@/components/loading";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { sleep } from "@accessprotocol/js";
 
 type UserAuthFormProps = HTMLAttributes<HTMLDivElement>;
 
@@ -47,6 +48,7 @@ export default function UserAuthForm({
     signTransaction,
   } = useWallet();
   const { visible, setVisible } = useWalletModal();
+  const { toast } = useToast();
 
   const walletDetected: boolean = useMemo(() => {
     return wallets.some((_wallet) => {
@@ -118,8 +120,9 @@ export default function UserAuthForm({
           setError(error.message);
           console.error(error);
           toast({
-            message: error.message || "Failed to sign transaction",
-            type: "error",
+            variant: "destructive",
+            title: "Uh oh! Something went wrong.",
+            description: error.message || "Failed to sign transaction",
           });
         }
       } finally {
