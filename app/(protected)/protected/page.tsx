@@ -1,5 +1,4 @@
-
-import SignOutButton from "@/components/sign-out-button";
+import SignOutButton from "@/components/sign-out-button"
 
 export default function ProtectedPage() {
   return (
@@ -13,9 +12,7 @@ export default function ProtectedPage() {
         </p>
       </div>
       <div className="flex gap-4">
-        <SignOutButton>
-          Sign out
-        </SignOutButton>
+        <SignOutButton>Sign out</SignOutButton>
       </div>
     </section>
   )

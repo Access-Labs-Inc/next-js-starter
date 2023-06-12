@@ -1,4 +1,4 @@
-"use client";
+"use client"
 
 import {
   HTMLAttributes,
@@ -7,36 +7,31 @@ import {
   useEffect,
   useMemo,
   useState,
-} from "react";
+} from "react"
+import { useSearchParams } from "next/navigation"
+import { WalletReadyState } from "@solana/wallet-adapter-base"
+import { useConnection, useWallet } from "@solana/wallet-adapter-react"
+import { useWalletModal } from "@solana/wallet-adapter-react-ui"
+import { PublicKey, Transaction, TransactionInstruction } from "@solana/web3.js"
+import bs58 from "bs58"
+import { getCsrfToken, signIn } from "next-auth/react"
 
-import { useSearchParams } from "next/navigation";
-import { WalletReadyState } from "@solana/wallet-adapter-base";
-import { useConnection, useWallet } from "@solana/wallet-adapter-react";
-import { useWalletModal } from "@solana/wallet-adapter-react-ui";
-import {
-  PublicKey,
-  Transaction,
-  TransactionInstruction,
-} from "@solana/web3.js";
-import bs58 from "bs58";
-import { getCsrfToken, signIn } from "next-auth/react";
+import { cn } from "@/lib/utils"
+import { Button } from "@/components/ui/button"
+import { useToast } from "@/components/ui/use-toast"
+import { Icons } from "@/components/icons"
+import Loading from "@/components/loading"
 
-import { Icons } from "@/components/icons";
-import { useToast } from "@/components/ui/use-toast";
-import Loading from "@/components/loading";
-import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
-
-type UserAuthFormProps = HTMLAttributes<HTMLDivElement>;
+type UserAuthFormProps = HTMLAttributes<HTMLDivElement>
 
 export default function UserAuthForm({
   className,
   ...props
 }: UserAuthFormProps) {
-  const searchParams = useSearchParams();
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
-  const { connection } = useConnection();
+  const searchParams = useSearchParams()
+  const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [error, setError] = useState<string | null>(null)
+  const { connection } = useConnection()
   const {
     publicKey,
     connect,
@@ -45,49 +40,49 @@ export default function UserAuthForm({
     wallets,
     wallet,
     signTransaction,
-  } = useWallet();
-  const { visible, setVisible } = useWalletModal();
-  const { toast } = useToast();
+  } = useWallet()
+  const { visible, setVisible } = useWalletModal()
+  const { toast } = useToast()
 
   const walletDetected: boolean = useMemo(() => {
     return wallets.some((_wallet) => {
       return (
         _wallet.adapter.name !== "Torus" &&
         _wallet.readyState === WalletReadyState.Installed
-      );
-    });
-  }, [wallets]);
+      )
+    })
+  }, [wallets])
 
   const handleModalClick: MouseEventHandler<HTMLButtonElement> =
     useCallback(() => {
-      setError(null);
-      setIsLoading(false);
+      setError(null)
+      setIsLoading(false)
 
-      setVisible(!visible);
-    }, [visible, setVisible]);
+      setVisible(!visible)
+    }, [visible, setVisible])
 
   const handleWalletConnectClick: MouseEventHandler<HTMLButtonElement> =
     useCallback(() => {
-      setError(null);
+      setError(null)
 
       connect().catch(() => {
-        setError("Failed to connect to wallet");
-        setIsLoading(false);
-      });
-    }, [connect]);
+        setError("Failed to connect to wallet")
+        setIsLoading(false)
+      })
+    }, [connect])
 
   useEffect(() => {
-    if (!(publicKey && signTransaction && connected) || error) return;
-    (async () => {
+    if (!(publicKey && signTransaction && connected) || error) return
+    ;(async () => {
       try {
-        setIsLoading(true);
-        const nonce = await getCsrfToken();
+        setIsLoading(true)
+        const nonce = await getCsrfToken()
 
         if (!nonce) {
-          throw new Error("Missing nonce.");
+          throw new Error("Missing nonce.")
         }
 
-        const tx = new Transaction();
+        const tx = new Transaction()
         tx.add(
           new TransactionInstruction({
             programId: new PublicKey(
@@ -96,39 +91,47 @@ export default function UserAuthForm({
             keys: [{ pubkey: publicKey, isSigner: true, isWritable: false }],
             data: Buffer.from(nonce, "utf8"),
           })
-        );
+        )
 
-        const blockHash = await connection.getLatestBlockhash("finalized");
+        const blockHash = await connection.getLatestBlockhash("finalized")
 
-        tx.feePayer = publicKey;
-        tx.recentBlockhash = blockHash.blockhash;
+        tx.feePayer = publicKey
+        tx.recentBlockhash = blockHash.blockhash
 
-        const signedTransaction = await signTransaction(tx);
+        const signedTransaction = await signTransaction(tx)
         const signedTransactionSerialized = signedTransaction
           .serialize({ requireAllSignatures: false })
-          .toString("hex");
+          .toString("hex")
 
         await signIn("credentials", {
           signedTransactionSerialized: signedTransactionSerialized,
           pubkey: bs58.encode(publicKey.toBytes()),
           redirect: true,
           callbackUrl: searchParams?.get("from") ?? "/dashboard/settings",
-        });
+        })
       } catch (error) {
         if (error instanceof Error) {
-          setError(error.message);
-          console.error(error);
+          setError(error.message)
+          console.error(error)
           toast({
             variant: "destructive",
             title: "Uh oh! Something went wrong.",
             description: error.message || "Failed to sign transaction",
-          });
+          })
         }
       } finally {
-        setIsLoading(false);
+        setIsLoading(false)
       }
-    })();
-  }, [publicKey, searchParams, signTransaction, connection, connected, error]);
+    })()
+  }, [
+    publicKey,
+    searchParams,
+    signTransaction,
+    connection,
+    connected,
+    error,
+    toast,
+  ])
 
   return (
     <div className={cn("grid gap-6", className)} {...props}>
@@ -147,5 +150,5 @@ export default function UserAuthForm({
         )}
       </Button>
     </div>
-  );
+  )
 }

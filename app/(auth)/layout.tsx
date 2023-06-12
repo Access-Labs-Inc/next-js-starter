@@ -1,7 +1,7 @@
-import { WalletConnectProvider } from "@/app/wallet-connect-provider";
+import { WalletConnectProvider } from "@/app/wallet-connect-provider"
 
 interface AuthLayoutProps {
-  children: React.ReactNode;
+  children: React.ReactNode
 }
 
 export default function AuthLayout({ children }: AuthLayoutProps) {
@@ -9,5 +9,5 @@ export default function AuthLayout({ children }: AuthLayoutProps) {
     <div className="min-h-screen">
       <WalletConnectProvider>{children}</WalletConnectProvider>
     </div>
-  );
+  )
 }

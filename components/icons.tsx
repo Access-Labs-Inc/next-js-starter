@@ -1,26 +1,29 @@
+import Image from "next/image"
 import {
+  ChevronLeft,
   LucideProps,
   Moon,
   SunMedium,
   Twitter,
-  ChevronLeft,
   Wallet,
   type Icon as LucideIcon,
 } from "lucide-react"
 
-import Image from "next/image";
-
 export type Icon = LucideIcon
 
 export const Icons = {
-
   sun: SunMedium,
   moon: Moon,
   twitter: Twitter,
   chevronLeft: ChevronLeft,
   wallet: Wallet,
   logo: () => (
-    <Image src="/access_protocol_logo.png" alt="Access Protocol logo" width="32" height="32" />
+    <Image
+      src="/access_protocol_logo.png"
+      alt="Access Protocol logo"
+      width="32"
+      height="32"
+    />
   ),
   gitHub: (props: LucideProps) => (
     <svg viewBox="0 0 438.549 438.549" {...props}>
