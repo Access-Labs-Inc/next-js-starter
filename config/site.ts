@@ -13,6 +13,10 @@ export const siteConfig = {
       title: "Protected",
       href: "/protected",
     },
+    {
+      title: "Locked",
+      href: "/locked",
+    },
   ],
   links: {
     twitter: "https://twitter.com/AccessProtocol",

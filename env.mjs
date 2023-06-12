@@ -13,6 +13,7 @@ export const env = createEnv({
       .default("development"), // Node environment
     NEXTAUTH_URL: z.string().url().optional(),
     NEXTAUTH_SECRET: z.string(),
+    NEXT_PUBLIC_POOL_ID: z.string().min(1), // your pool ID
   },
   /*
    * Environment variables available on the client (and server).
@@ -29,6 +30,7 @@ export const env = createEnv({
     NEXT_PUBLIC_SOLANA_NETWORK: z
       .nativeEnum(WalletAdapterNetwork)
       .default(WalletAdapterNetwork.Devnet), // solana network
+    NEXT_PUBLIC_POOL_ID: z.string().min(1), // your pool ID
   },
   /*
    * Due to how Next.js bundles environment variables on Edge and Client,
@@ -45,6 +47,7 @@ export const env = createEnv({
     NEXT_PUBLIC_SOLANA_RPC_ENDPOINT:
       process.env.NEXT_PUBLIC_SOLANA_RPC_ENDPOINT,
     NEXT_PUBLIC_SOLANA_NETWORK: process.env.NEXT_PUBLIC_SOLANA_NETWORK,
+    NEXT_PUBLIC_POOL_ID: process.env.NEXT_PUBLIC_POOL_ID,
     // Next Auth
     NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
     NEXTAUTH_URL: process.env.NEXTAUTH_URL,

@@ -26,7 +26,6 @@ import { useToast } from "@/components/ui/use-toast";
 import Loading from "@/components/loading";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { sleep } from "@accessprotocol/js";
 
 type UserAuthFormProps = HTMLAttributes<HTMLDivElement>;
 
