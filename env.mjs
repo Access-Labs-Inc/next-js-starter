@@ -11,7 +11,6 @@ export const env = createEnv({
     NODE_ENV: z
       .enum(["development", "test", "production"])
       .default("development"), // Node environment
-    NEXTAUTH_URL: z.string().url().optional(),
     NEXTAUTH_SECRET: z.string(),
     NEXT_PUBLIC_POOL_ID: z.string().min(1), // your pool ID
   },
@@ -24,7 +23,6 @@ export const env = createEnv({
     NEXT_PUBLIC_NODE_ENV: z
       .enum(["development", "test", "production"])
       .default("development"), // Node environment
-    NEXT_PUBLIC_APP_URL: z.string().url().min(1), // scribe URL
     NEXT_PUBLIC_ACCESS_PROGRAM_ID: z.string().min(1), // contract pubkey
     NEXT_PUBLIC_SOLANA_RPC_ENDPOINT: z.string().url().min(1), // solana rpc url
     NEXT_PUBLIC_SOLANA_NETWORK: z
@@ -41,7 +39,6 @@ export const env = createEnv({
   runtimeEnv: {
     // Next.js
     NEXT_PUBLIC_NODE_ENV: process.env.NODE_ENV,
-    NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,
     // Solana
     NEXT_PUBLIC_ACCESS_PROGRAM_ID: process.env.NEXT_PUBLIC_ACCESS_PROGRAM_ID,
     NEXT_PUBLIC_SOLANA_RPC_ENDPOINT:
@@ -50,6 +47,5 @@ export const env = createEnv({
     NEXT_PUBLIC_POOL_ID: process.env.NEXT_PUBLIC_POOL_ID,
     // Next Auth
     NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
-    NEXTAUTH_URL: process.env.NEXTAUTH_URL,
   },
 });
