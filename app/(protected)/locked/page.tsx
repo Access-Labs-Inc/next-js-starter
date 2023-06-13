@@ -2,7 +2,7 @@ import { notFound } from "next/navigation"
 import { env } from "@/env.mjs"
 import { PublicKey } from "@solana/web3.js"
 
-import { hasValidSubscriptionForPool } from "@/lib/acs"
+import { hasValidSubscription } from "@/lib/acs"
 import { getCurrentUser } from "@/lib/session"
 import SignOutButton from "@/components/sign-out-button"
 
@@ -15,7 +15,7 @@ export default async function LockedPage() {
   }
 
   const pubkey = new PublicKey(user.pubkey)
-  const isSubscriber = await hasValidSubscriptionForPool(poolPubkey, pubkey)
+  const isSubscriber = await hasValidSubscription(poolPubkey, pubkey)
 
   return (
     <section className="container grid items-center gap-6 pb-8 pt-6 md:py-10">
